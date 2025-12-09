@@ -36,17 +36,26 @@ timeUntilTakeOff('2025*12*25@00|00|12 NP', takeoff)
 # import math
 
 import datetime
+import math
 
 
 def time_until_take_off(from_time: str, take_off_time: str) -> int:
-    return 0
+    def format_elves_timestamp(time: str) -> str:
+        date = time[: time.index("@")].split("*")
+        hour = time[time.index("@") + 1 : time.index(" ")].split("|")
+        formated_time = datetime.datetime(
+            int(date[0]),
+            int(date[1]),
+            int(date[2]),
+            int(hour[0]),
+            int(hour[1]),
+            int(hour[2]),
+        )
+        return math.floor(formated_time.timestamp())
+
+    from_time_formatted = format_elves_timestamp(from_time)
+    take_off_time_formatted = format_elves_timestamp(take_off_time)
+    return take_off_time_formatted - from_time_formatted
 
 
-def format_elves_timestamp(time: str) -> str:
-    date = time[: time.index("@")].split("*")
-    hour = time[time.index("@") + 1 : time.index(" ")].split("|")
-    formated_time=datetime.datetime(date[0],date[1],date[2],hour[0],hour[1],hour[2])
-    print(formated_time)
-
-
-format_elves_timestamp("2025*12*25@00|00|12 NP")
+print(time_until_take_off("2025*12*24@23|59|30 NP", "2025*12*25@00|00|00 NP"))
