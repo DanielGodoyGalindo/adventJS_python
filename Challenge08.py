@@ -30,11 +30,10 @@ findUniqueToy('z') // 'z'
 
 def findUniqueToy(toy: str) -> str:
     toy = toy[::-1]
-    toy_to_lower = toy.lower()[::-1]
-    non_repeated_letter = ""
-    for idx, letter in enumerate(toy_to_lower[::-1]):
+    toy_to_lower = toy.lower()
+    for idx, letter in enumerate(toy_to_lower):
         if toy_to_lower.count(letter) == 1:
             non_repeated_letter = toy[idx]
     return non_repeated_letter if non_repeated_letter else ""
 
-print(findUniqueToy("z"))
+print(findUniqueToy("sTreSS"))

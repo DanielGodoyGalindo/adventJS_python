@@ -37,22 +37,24 @@ drawTree(4, '+', 1)
 def drawTree(height, ornament, frequency):
     tree = ""
     pos = 1
-
+    # write line by line
     for h in range(height):
+        # calculate how many *s
         middle = h * 2 + 1
         line_with_ornaments = ""
-
+        # put ornament or * in current line
         for _ in range(middle):
             if pos % frequency == 0:
                 line_with_ornaments += ornament
             else:
                 line_with_ornaments += "*"
-            pos += 1
-
+            pos += 1  # increment position in line
+        # calculate spaces to insert before line
         spaces = " " * (height - 1 - h)
+        # insert line in tree
         tree += spaces + line_with_ornaments + "\n"
+    # trunk
     tree += " " * (height - 1) + "#"
-
     return tree
 
 
