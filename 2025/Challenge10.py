@@ -26,14 +26,17 @@ def max_depth(s: str) -> int:
     nesting_level = 0
     max_nesting_level = 0
     for ch in s:
+        # if there is an opening bracket
         if ch == "[":
-            nesting_level += 1
+            nesting_level += 1 # this value will increase or decrease depending on the character
             max_nesting_level = max(nesting_level, max_nesting_level)
+        # if there is an closing bracket
         elif ch == "]":
             nesting_level -= 1
+            # if there are more closing brackets than opening brackets
             if nesting_level < 0:
                 return -1
+    # nesting_level should be 0 so the number of opening and closing brackets match
     if nesting_level != 0:
         return -1
-
     return max_nesting_level
