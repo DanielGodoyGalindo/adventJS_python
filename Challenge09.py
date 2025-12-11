@@ -51,17 +51,47 @@ from typing import List, Literal
 
 
 def move_reno(board: str, moves: str) -> Literal["fail", "crash", "success"]:
-    # split movements into a list to loop it
-    # scan the board to check how many rows and columns are, save in dictionary as ==> {"0,0":"." , "0,1":"." , ... , "1,1":"*", "1,2":"#" ...}
-    # scan to save where are located all the items (e.g second row first colum is position=1,0)
-    # moving up is position --> r= r-1,c = c
-    # moving right --> r = r, c = c +1
-    # if a movement gest an item, return the correct message
-    moves_list = moves.split(" ")
+    # values to save as coordenates
     row_pos = 0
     col_pos = 0
-    for idx,pointer in enumerate(board):
-        print(pointer)
+    # dict to store coordinates as keys and items as values (e.g {"0,0":"." , "0,1":"." , ... , "1,1":"*", "1,2":"#" ...})
+    positions = dict()
+    # scan board and save coordinates with items
+    for idx, pointer in enumerate(board):
+        if idx == 0:
+            continue
+        key = str(row_pos) + "," + str(col_pos)
+        positions[key] = pointer
+        col_pos += 1
+        if pointer == "\n":
+            row_pos += 1
+            col_pos = 0
+    row_pos -= 1
+    # get coordinates of robot
+    robot_vacuum = [key for key, val in positions.items() if val == "@"]
+    # change coordinates with moves
+    robot_row_coordenate, robot_col_coordenate = map(int, robot_vacuum[0].split(","))
+    for letter in moves:
+        if letter == "U":
+            robot_row_coordenate -= 1
+        elif letter == "D":
+            robot_row_coordenate += 1
+        elif letter == "L":
+            robot_col_coordenate -= 1
+        elif letter == "R":
+            robot_col_coordenate += 1
+        robot_vacuum[0] = f"{robot_row_coordenate},{robot_col_coordenate}"
+        # get item located in recent coordenate
+        new_value_position = positions.get(robot_vacuum[0])
+        if new_value_position == "*":
+            return "success"
+        elif (
+            robot_row_coordenate < 0
+            or robot_col_coordenate < 0
+            or int(robot_vacuum[0][0]) > row_pos
+            or new_value_position == "#"
+        ):
+            return "crash"
     return "fail"
 
 
@@ -72,4 +102,4 @@ board = """
 .....
 """
 
-move_reno(board, "UU")
+print(move_reno(board, "RR"))
