@@ -47,7 +47,7 @@ moveReno(board, 'RR')
 // ➞ 'fail' -> it moves but doesn't pick anything up
 """
 
-from typing import List, Literal
+from typing import Literal
 
 
 def move_reno(board: str, moves: str) -> Literal["fail", "crash", "success"]:
