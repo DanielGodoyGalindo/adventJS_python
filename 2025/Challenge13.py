@@ -52,8 +52,7 @@ runFactory([
 ]) // 'loop'
 """
 
-
-def runFactory(factory):
+'''def runFactory(factory):
     # obtain factory data
     factory_items = {}
     total_items = 0
@@ -81,7 +80,42 @@ def runFactory(factory):
             return "completed"
         if key in visited_cells:
             return "loop"
-    return "broken"
+    return "broken"'''
+
+
+def runFactory(factory):
+    rows = len(factory)
+    cols = len(factory[0])
+
+    r = 0
+    c = 0
+
+    visited = set()
+
+    while True:
+        if r < 0 or r >= rows or c < 0 or c >= cols:
+            return "broken"
+
+        key = (r, c)
+
+        if key in visited:
+            return "loop"
+
+        visited.add(key)
+
+        cell = factory[r][c]
+
+        if cell == ".":
+            return "completed"
+
+        if cell == ">":
+            c += 1
+        elif cell == "<":
+            c -= 1
+        elif cell == "^":
+            r -= 1
+        elif cell == "v":
+            r += 1
 
 
 print(runFactory([">>v", "..<"]))
