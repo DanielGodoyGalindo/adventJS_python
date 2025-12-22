@@ -55,11 +55,8 @@ Tip: This problem can be solved in several ways, but search algorithms like BFS 
 
 
 def can_escape(maze: list[list[str]]) -> bool:
-    # from start "S", check if a direction has "." and save former location e.g "0,0" in array
-    # if a direction has "." and it hasn't been visited, move current position
-    # if E is locaten return true, if there aren't more "." to go, return false
 
-    visited = []
+    visited = set()
     directions = [
         (-1, 0),  # up
         (1, 0),  # down
@@ -67,40 +64,49 @@ def can_escape(maze: list[list[str]]) -> bool:
         (0, 1),  # right
     ]
 
+    # find start location
+    start = None
+    for r, row in enumerate(maze):
+        for c, cell in enumerate(row):
+            if cell == "S":
+                start = (r, c)
+                break
+        if start:
+            break
+        else:
+            return False
+
     # get all possible moves
-    def get_moves(c):
-        row, col = c
+    def get_moves(pos):
+        row, col = pos
         moves = []
         for dr, dc in directions:
             new_row = row + dr
             new_col = col + dc
-            # check if there's no negative coordenate
             if 0 <= new_row < len(maze) and 0 <= new_col < len(maze[0]):
-                cell = maze[new_row][new_col]
-                if cell != "#":
+                if maze[new_row][new_col] != "#":
                     moves.append((new_row, new_col))
         return moves
 
-    # c --> current location
-    c = ()
-    # find start location
-    for row_idx, row in enumerate(maze):
-        if c != []:
-            break
-        for item_idx, item in enumerate(row):
-            if item == "S":
-                c = (row_idx, item_idx)  # tuple
-                break
     # check directions
+    def dfs(pos):
+        row, col = pos
+        if maze[row][col] == "E":
+            return True
+        visited.add(pos)
+        for move in get_moves(pos):
+            if move not in visited:
+                if dfs(move):
+                    return True
+        return False
+    return dfs(start)
 
 
 print(
-    can_escape(
-        [
-            ["S", ".", "#", "."],
-            ["#", ".", "#", "."],
-            [".", ".", ".", "."],
-            ["#", "#", "#", "E"],
-        ]
-    )
+    can_escape([
+  ['S', '.', '.'],
+  ['.', '.', '.'],
+  ['#', '#', '#'],
+  ['.', '.', 'E']
+])
 )
