@@ -96,9 +96,11 @@ def can_escape(maze: list[list[str]]) -> bool:
         visited.add(pos)
         for move in get_moves(pos):
             if move not in visited:
-                if dfs(move):
+                if dfs(move): # calls itself until it returns true (E is found) or if no more moves (returns false)
                     return True
         return False
+    
+    # call recursive method with starting point just the first time
     return dfs(start)
 
 
