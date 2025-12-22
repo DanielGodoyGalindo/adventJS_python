@@ -70,11 +70,14 @@ def clearGifts(warehouse: list[list[str]], drops: list[int]) -> list[list[str]]:
     def new_empty_row():
         return ["." for _ in range(len(warehouse[0]))]
 
-    def check_if_row_is_full(row_idx):
-        row = warehouse[row_idx]
-        if all(cell == "#" for cell in row):
-            warehouse.pop(row_idx)
-            warehouse.append(new_empty_row())
+    def clean_full_rows():
+        i = 0
+        while i < len(warehouse):
+            if all(cell == "#" for cell in warehouse[i]):
+                warehouse.pop(i)
+                warehouse.append(new_empty_row())
+            else:
+                i += 1
 
     # reverse warehouse
     warehouse.reverse()
@@ -83,7 +86,7 @@ def clearGifts(warehouse: list[list[str]], drops: list[int]) -> list[list[str]]:
         for row_idx, row in enumerate(warehouse):
             if row[col] == ".":
                 row[col] = "#"
-                check_if_row_is_full(row_idx)
+                clean_full_rows()
                 break
 
     # reverse again to return original warehouse order
